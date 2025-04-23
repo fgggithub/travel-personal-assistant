@@ -54,38 +54,10 @@ export const handler: Handler = async (event) => {
     //return JSON.stringify({
     //  message: response.output.text,
     //});
-    const rawText = response.output?.text || "No response from Bedrock";
-    const citations = response.citations ?? [];
-
-    const links = citations.flatMap((citation, i) =>
-      citation.retrievedReferences?.map((ref, j) => {
-        const location = ref.location;
-        let url = "No URL available";
-
-        if (location?.webLocation?.url) {
-          url = location.webLocation.url;
-        } else if (location?.s3Location?.uri) {
-          url = location.s3Location.uri;
-        } else if (location?.confluenceLocation?.url) {
-          url = location.confluenceLocation.url;
-        } else if (location?.salesforceLocation?.url) {
-          url = location.salesforceLocation.url;
-        } else if (location?.sharePointLocation?.url) {
-          url = location.sharePointLocation.url;
-        }
-
-        const title = ref.content?.text?.slice(0, 80) || `Reference ${i + 1}.${j + 1}`;
-        return `- [${title}](${url})`;
-      }) || []
-    ).join("\n");
-    const fullResponse = `${rawText}${
-      links ? `\n\n---\n**References**:\n${links}` : ""
-    }`;
-
     return JSON.stringify({
       message: {
         role: "assistant",
-        content: fullResponse || "No response from Bedrock",
+        content: response.output?.text || "No response from Bedrock",
       }
     });
   } catch (error) {

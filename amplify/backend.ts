@@ -13,9 +13,16 @@ export const backend = defineBackend({
 backend.personalAssistantFunction.resources.lambda.addToRolePolicy(
   new PolicyStatement({
     effect: Effect.ALLOW,
-    actions: ["bedrock:InvokeModel"],
+    actions: [
+      "bedrock:InvokeModel",
+      "bedrock:RetrieveAndGenerate",
+      "bedrock:GetInferenceProfile",
+      "bedrock:*"
+    ],
     resources: [
-      `arn:aws:bedrock:*::foundation-model/${MODEL_ID}`,
+      `arn:aws:bedrock:*::foundation-model/anthropic.claude-3-haiku-20240307-v1:0`,
+      `arn:aws:bedrock:*:703671928942:knowledge-base/ZPPCLNX6AG`,
+      `arn:aws:bedrock:*:703671928942:inference-profile/us.anthropic.claude-3-haiku-20240307-v1:0`  
     ],
   })
 );

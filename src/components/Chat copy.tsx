@@ -62,7 +62,6 @@ export function Chat() {
       setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const lastMessage = conversation[conversation.length - 1];
